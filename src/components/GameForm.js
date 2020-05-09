@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import { Form, Button, Grid, Image, Message } from 'semantic-ui-react';
+import { postGame } from '../store/actionCreators';
 
-const GameForm = () => {
+const GameForm = ({ postGame }) => {
 
 	const initialState = { _id: '', title: '', cover: '', loading: false, success: false, errors: { title: false, cover: false } };
 
@@ -30,8 +32,9 @@ const GameForm = () => {
 			})()
 				.then(() => {
 					setTimeout(() => {
-						updateState(state => ({ ...state, loading: false, success: true }))
-					}, 2000);
+						postGame({ title, cover });
+						updateState(state => ({ ...state, loading: false, success: true }));
+					}, 1000);
 				})
 		} else if (success) {
 			// Show fields once again
@@ -98,4 +101,4 @@ const GameForm = () => {
 	);
 }
 
-export default GameForm;
+export default connect(null, { postGame })(GameForm);
